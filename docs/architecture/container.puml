@@ -1,0 +1,51 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(customer, "Student", "Student linked to ABC institution.")
+
+System_Boundary(c0, "Instituição ABC System") {
+
+    Container_Ext(web_app, "Web App", "Javascript, Angular 11", "Client responsible for providing the client access interface")
+
+    Container(message_bus, "Message Bus", "Event Hubs, Kafka", "Transport for business events")
+
+    Container(web_api, "Web Api App", "C# NET 6", "Web API responsible for providing system features")
+
+    Container(orchestrator_container, "Orchestrator", "C# NET 6", "Worker responsible for orchestrating the complex flows")
+
+    ContainerDb(orchestrator_db, "Orchestrator Database", "Cosmos DB", "Stores flow information")
+
+    Container(worker_payment, "Worker Payment", "C# NET 6", "Worker responsible for interacting with the bank transaction partner")
+
+    Container(worker_profile_analysis, "Worker Profile Analysis", "C# NET 6", "Worker responsible for analyzing the user profile")
+
+    Container(worker_notification, "Worker Notification", "C# NET 6", "Worker responsible for notifying interested parties")
+
+}
+
+System_Ext(partner_bank_system, "PagSeguro", "Partner for bank transactions")
+
+Rel(customer, web_app, "Uses")
+Rel(web_app, web_api, "Calls to", "HTTPS/JSON")
+
+System_Ext(mail_system, "SendGrid system", "The external e-mail system partner.")
+
+Rel_R(web_api, message_bus, "Sends customer update events to")
+
+Rel_D(orchestrator_container, message_bus, "Publish/Subscribe events")
+
+Rel_D(worker_payment, message_bus, "Publish/Subscribe events")
+
+Rel_D(orchestrator_container, orchestrator_db, "Reads from and writes to")
+
+Rel_R(worker_payment, partner_bank_system, "JSON/HTTPS", "Makes API Calls")
+
+Rel_L(worker_notification, message_bus, "Subscribe events")
+
+Rel_D(worker_profile_analysis, message_bus, "Publish/Subscribe events")
+
+Rel_R(worker_notification, mail_system, "JSON/HTTPS", "Makes API Calls")
+
+@enduml

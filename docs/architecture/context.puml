@@ -1,0 +1,25 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context diagram for Instituição ABC
+
+Person(customer, "Student", "Student linked to ABC institution.")
+
+Enterprise_Boundary(c0, "Instituição ABC") {
+
+    System(web_system, "Instituição ABC System", "System responsible for providing features")
+
+}
+
+System_Ext(mail_system, "SendGrid system", "The external e-mail system partner.")
+
+System_Ext(partner_bank_system, "PagSeguro", "Partner for bank transactions")
+
+Rel(customer, web_system, "Uses")
+
+Rel(web_system, partner_bank_system, "Uses")
+Rel(web_system, mail_system, "Uses")
+
+@enduml

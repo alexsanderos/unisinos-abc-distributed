@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Unisinos.Abc.AnalyzeProfile-93EAE49A-4370-4F18-8C3C-B18A54072998</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="MassTransit" Version="8.0.7" />
+	<PackageReference Include="MassTransit.Kafka" Version="8.0.7" />
+	<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unisinos.Abc.Messages\Unisinos.Abc.Messages.csproj" />
+  </ItemGroup>
+</Project>

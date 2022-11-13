@@ -13,13 +13,10 @@ namespace Unisinos.Abc.AnalyzeProfile.Configuration
         {
             services.AddMassTransit(x =>
             {
-                var eventHubsUserName = configuration.GetSection("ConnectionStrings:AzureEventHubsUserName").Value;
-                var eventHubsConnection = configuration.GetSection("ConnectionStrings:AzureEventHubs").Value;
-                var eventHubsHost = configuration.GetSection("ConnectionStrings:AzureEventHubsHost").Value;
+                var kafkaHost = configuration.GetSection("ConnectionStrings:KafkaBrokerHost").Value;
 
-                x.UsingAzureServiceBus((context, cfg) =>
+                x.UsingInMemory((context, cfg) =>
                 {
-                    cfg.Host(eventHubsConnection);
                     cfg.ConfigureEndpoints(context);
                 });
 
@@ -33,15 +30,9 @@ namespace Unisinos.Abc.AnalyzeProfile.Configuration
 
                     rider.SetKebabCaseEndpointNameFormatter();
 
-                    rider.UsingKafka(new()
+                    rider.UsingKafka((context, k) =>
                     {
-                        SecurityProtocol = SecurityProtocol.SaslSsl,
-                        SaslMechanism = SaslMechanism.Plain,
-                        SaslUsername = eventHubsUserName,
-                        SaslPassword = eventHubsConnection
-                    }, (context, k) =>
-                    {
-                        k.Host(eventHubsHost);
+                        k.Host(kafkaHost);
 
                         k.TopicEndpoint<AnalyzeProfileCreditCommand>(
                             Topics.AnalyzeProfile.AnalyzeProfileCreditCommand, Topics.DefaultGroup.DefaultGroupId, e =>
@@ -52,7 +43,7 @@ namespace Unisinos.Abc.AnalyzeProfile.Configuration
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
                     });

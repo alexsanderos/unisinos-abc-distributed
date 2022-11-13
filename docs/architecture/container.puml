@@ -9,15 +9,17 @@ System_Boundary(c0, "Instituição ABC System") {
 
     Container_Ext(web_app, "Web App", "Javascript, Angular 11", "Client responsible for providing the client access interface")
 
-    Container(message_bus, "Message Bus", "Event Hubs, Kafka", "Transport for business events")
+    Container(message_bus, "Message Bus", "Kafka", "Transport for business events")
 
     Container(web_api, "Web Api App", "C# NET 6", "Web API responsible for providing system features")
 
     Container(orchestrator_container, "Orchestrator", "C# NET 6", "Worker responsible for orchestrating the complex flows")
 
-    ContainerDb(orchestrator_db, "Orchestrator Database", "Cosmos DB", "Stores flow information")
+    ContainerDb(orchestrator_db, "Orchestrator Database", "SQL Server", "Stores flow information")
 
     Container(worker_payment, "Worker Payment", "C# NET 6", "Worker responsible for interacting with the bank transaction partner")
+    
+    ContainerDb(payment_db, "Payment Database", "SQL Server", "Stores payment information")
 
     Container(worker_profile_analysis, "Worker Profile Analysis", "C# NET 6", "Worker responsible for analyzing the user profile")
 
@@ -41,6 +43,8 @@ Rel_D(worker_payment, message_bus, "Publish/Subscribe events")
 Rel_D(orchestrator_container, orchestrator_db, "Reads from and writes to")
 
 Rel_R(worker_payment, partner_bank_system, "JSON/HTTPS", "Makes API Calls")
+
+Rel_D(worker_payment, payment_db, "Reads from and writes to")
 
 Rel_L(worker_notification, message_bus, "Subscribe events")
 

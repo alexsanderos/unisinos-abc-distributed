@@ -10,7 +10,6 @@
   <ItemGroup>
 	<PackageReference Include="MassTransit" Version="8.0.7" />
 	<PackageReference Include="MassTransit.Kafka" Version="8.0.7" />
-	<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
 

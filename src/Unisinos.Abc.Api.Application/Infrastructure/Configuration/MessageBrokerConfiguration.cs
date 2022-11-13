@@ -16,13 +16,10 @@ namespace Unisinos.Abc.Api.Application.Infrastructure.Configuration
 
             services.AddMassTransit(x =>
             {
-                var eventHubsUserName = configuration.GetSection("ConnectionStrings:AzureEventHubsUserName").Value;
-                var eventHubsConnection = configuration.GetSection("ConnectionStrings:AzureEventHubs").Value;
-                var eventHubsHost = configuration.GetSection("ConnectionStrings:AzureEventHubsHost").Value;
+                var kafkaHost = configuration.GetSection("ConnectionStrings:KafkaBrokerHost").Value;
 
-                x.UsingAzureServiceBus((context, cfg) =>
+                x.UsingInMemory((context, cfg) =>
                 {
-                    cfg.Host(eventHubsConnection);
                     cfg.ConfigureEndpoints(context);
                 });
 
@@ -33,15 +30,9 @@ namespace Unisinos.Abc.Api.Application.Infrastructure.Configuration
 
                     rider.SetKebabCaseEndpointNameFormatter();
 
-                    rider.UsingKafka(new()
+                    rider.UsingKafka((context, k) =>
                     {
-                        SecurityProtocol = Confluent.Kafka.SecurityProtocol.SaslSsl,
-                        SaslMechanism = Confluent.Kafka.SaslMechanism.Plain,
-                        SaslUsername = eventHubsUserName,
-                        SaslPassword = eventHubsConnection
-                    }, (context, k) =>
-                    {
-                        k.Host(eventHubsHost);
+                        k.Host(kafkaHost);
                     });
                 });
             });

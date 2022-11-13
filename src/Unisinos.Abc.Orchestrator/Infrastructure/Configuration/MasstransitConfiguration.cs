@@ -1,8 +1,10 @@
 ﻿using Confluent.Kafka;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Unisinos.Abc.Messages;
 using Unisinos.Abc.Messages.Commands;
 using Unisinos.Abc.Messages.Events;
+using Unisinos.Abc.Orchestrator.Infrastructure.Data.Context;
 using Unisinos.Abc.Orchestrator.Sagas;
 
 namespace Unisinos.Abc.Orchestrator.Infrastructure.Configuration
@@ -12,15 +14,8 @@ namespace Unisinos.Abc.Orchestrator.Infrastructure.Configuration
         public static void AddMasstransitConfirurations(
             this IServiceCollection services, IConfiguration configuration)
         {
-            var eventHubsUserName = configuration.GetSection("ConnectionStrings:AzureEventHubsUserName").Value;
-            var eventHubsConnection = configuration.GetSection("ConnectionStrings:AzureEventHubs").Value;
-            var eventHubsHost = configuration.GetSection("ConnectionStrings:AzureEventHubsHost").Value;
-            var eventHubsKey = configuration.GetSection("ConnectionStrings:AzureEventHubsKey").Value;
-
-            var mongoUri = configuration.GetSection("ConnectionStrings:DatabaseUri").Value;
-            var mongoKey = configuration.GetSection("ConnectionStrings:DatabaseKey").Value;
-            var mongoDatabaseName = configuration.GetSection("ConnectionStrings:DatabaseName").Value;
-            var mongoDatabaseConnection = configuration.GetSection("ConnectionStrings:DatabaseConnection").Value;
+            var sqlConnection = configuration.GetSection("ConnectionStrings:DatabaseConnection").Value;
+            var kafkaHost = configuration.GetSection("ConnectionStrings:KafkaBrokerHost").Value;
 
             services.AddMassTransit(x =>
             {
@@ -32,11 +27,14 @@ namespace Unisinos.Abc.Orchestrator.Infrastructure.Configuration
                 x.AddRider(rider =>
                 {
                     rider.AddSagaStateMachine<PurchaseCourseStateMachine, PurchaseCourseState>()
-                        .MongoDbRepository(r =>
+                        .EntityFrameworkRepository(repository =>
                         {
-                            r.Connection = mongoDatabaseConnection;
-                            r.DatabaseName = mongoDatabaseName;
-                            r.CollectionName = "sagas";
+                            repository.ConcurrencyMode = ConcurrencyMode.Pessimistic;
+
+                            repository.AddDbContext<DbContext, UnisinosAbcContext>((provider, builder) =>
+                            {
+                                builder.UseSqlServer(sqlConnection);
+                            });
                         });
 
                     rider.AddProducer<AnalyzeProfileCreditCommand>(Topics.AnalyzeProfile.AnalyzeProfileCreditCommand);
@@ -45,18 +43,12 @@ namespace Unisinos.Abc.Orchestrator.Infrastructure.Configuration
 
                     rider.SetKebabCaseEndpointNameFormatter();
 
-                    rider.UsingKafka(new()
+                    rider.UsingKafka((context, k) =>
                     {
-                        SecurityProtocol = SecurityProtocol.SaslSsl,
-                        SaslMechanism = SaslMechanism.Plain,
-                        SaslUsername = eventHubsUserName,
-                        SaslPassword = eventHubsConnection
-                    }, (context, k) =>
-                    {
-                        k.Host(eventHubsHost);
+                        k.Host(kafkaHost);
 
                         k.TopicEndpoint<PurchaseCreditCourseCommand>(
-                            Topics.PurchaseCreditCourse.PurchaseCreditCourseCommand, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.PurchaseCreditCourse.PurchaseCreditCourseCommand, Topics.PurchaseCreditCourse.PurchaseCreditCourseCommandGroupId, e =>
                         {
                             e.ConfigureSaga<PurchaseCourseState>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
@@ -64,55 +56,55 @@ namespace Unisinos.Abc.Orchestrator.Infrastructure.Configuration
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
 
                         k.TopicEndpoint<IApprovedProfileEvent>(
-                            Topics.AnalyzeProfile.ApprovedProfileEvent, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.AnalyzeProfile.ApprovedProfileEvent, Topics.AnalyzeProfile.ApprovedProfileEventGroupId, e =>
                         {
                             e.ConfigureSaga<PurchaseCourseState>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
 
                         k.TopicEndpoint<IDisapprovedProfileEvent>(
-                            Topics.AnalyzeProfile.DisapprovedProfileEvent, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.AnalyzeProfile.DisapprovedProfileEvent, Topics.AnalyzeProfile.DisapprovedProfileEventGroupId, e =>
                         {
                             e.ConfigureSaga<PurchaseCourseState>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
 
                         k.TopicEndpoint<IPaymentCompletedEvent>(
-                            Topics.PaymentProcess.PaymentCompletedEvent, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.PaymentProcess.PaymentCompletedEvent, Topics.PaymentProcess.PaymentCompletedEventGroupId, e =>
                         {
                             e.ConfigureSaga<PurchaseCourseState>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
 
                         k.TopicEndpoint<IPaymentErrorEvent>(
-                            Topics.PaymentProcess.PaymentErrorEvent, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.PaymentProcess.PaymentErrorEvent, Topics.PaymentProcess.PaymentErrorEventGroupId, e =>
                         {
                             e.ConfigureSaga<PurchaseCourseState>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
                     });

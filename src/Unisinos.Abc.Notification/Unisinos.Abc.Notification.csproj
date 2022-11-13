@@ -1,18 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-Unisinos.Abc.Notification-1F6EAC56-5C52-43CA-AD49-E044065B6C7B</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="MassTransit" Version="8.0.7" />
 	<PackageReference Include="MassTransit.Kafka" Version="8.0.7" />
-	<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
   </ItemGroup>

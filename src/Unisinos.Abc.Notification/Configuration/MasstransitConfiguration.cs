@@ -12,13 +12,10 @@ namespace Unisinos.Abc.Notification.Configuration
         {
             services.AddMassTransit(x =>
             {
-                var eventHubsUserName = configuration.GetSection("ConnectionStrings:AzureEventHubsUserName").Value;
-                var eventHubsConnection = configuration.GetSection("ConnectionStrings:AzureEventHubs").Value;
-                var eventHubsHost = configuration.GetSection("ConnectionStrings:AzureEventHubsHost").Value;
+                var kafkaHost = configuration.GetSection("ConnectionStrings:KafkaBrokerHost").Value;
 
-                x.UsingAzureServiceBus((context, cfg) =>
+                x.UsingInMemory((context, cfg) =>
                 {
-                    cfg.Host(eventHubsConnection);
                     cfg.ConfigureEndpoints(context);
                 });
 
@@ -28,18 +25,12 @@ namespace Unisinos.Abc.Notification.Configuration
 
                     rider.SetKebabCaseEndpointNameFormatter();
 
-                    rider.UsingKafka(new()
+                    rider.UsingKafka((context, k) =>
                     {
-                        SecurityProtocol = SecurityProtocol.SaslSsl,
-                        SaslMechanism = SaslMechanism.Plain,
-                        SaslUsername = eventHubsUserName,
-                        SaslPassword = eventHubsConnection
-                    }, (context, k) =>
-                    {
-                        k.Host(eventHubsHost);
+                        k.Host(kafkaHost);
 
                         k.TopicEndpoint<NotificationCommand>(
-                            Topics.Notification.NotificationCommand, Topics.DefaultGroup.DefaultGroupId, e =>
+                            Topics.Notification.NotificationCommand, Topics.Notification.NotificationCommandGroupId, e =>
                         {
                             e.Consumer<NotificationConsumer>(context);
 
@@ -47,7 +38,7 @@ namespace Unisinos.Abc.Notification.Configuration
                             e.CreateIfMissing(t =>
                             {
                                 t.NumPartitions = 1;
-                                t.ReplicationFactor = 2;
+                                t.ReplicationFactor = 1;
                             });
                         });
                     });

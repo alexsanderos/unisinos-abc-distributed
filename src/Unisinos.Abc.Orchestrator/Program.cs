@@ -8,6 +8,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         IConfiguration configurationService = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json").Build();
 
+        services.AddPersistenceConfiguration(configurationService);
         services.AddMasstransitConfirurations(configurationService);
         services.AddHostedService<Worker>();
 

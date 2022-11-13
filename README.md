@@ -8,41 +8,43 @@ C4 Model
 
 ### Container Diagram
 
-![container](https://www.plantuml.com/plantuml/png/bLLDSzem4BtpArHweJC9RcOwFVIKy35DqeGmc4oEdhMz1Wsov97a4Dhfh-cXFoH_h2iPCE3G99n0gttlxTFkScuiQ5lcelM1oqIKARAvjONv5WGQbjqPj_CoBWtgH4cBqdOJbGU50EboJerD1O-3_fVJiJkwlxq9SZ0MDHr5VSe0Bb5t2uVV2Y_l7gBnS1BUZQAx--dDrMZO-THgZL4R9Jj9QQpAKP-mTcX9XhJj-YiJN2umPLQnYrwVSMaijwNbIdRR116kY3EFUggKAUXL9_bCgLVL9Vxyz_bFbLPTQtzYlrejHf-jm6ZuP3jBZ2Ce2ifym9XT58NZluP7C8dcXJrX5t9M2j3ixCn5-e8xOHfDeQJXiK2MASqAhHvvokMCsJcofBe4IOB6a6no9eC4dUOz0PsSuZ33YAmcxDlg5-kLnb4D7nt8PHbJx0Ta2t27KmsIgBNrj9H7ECI1xgvf4bJLyMrrV5DX_oCR3QViQtiJ6b_zfoZZBMGPWYtfLfD7wMIEncgmIaV9vfYmxtO23Lwb5wWRj3NMra-L5mAVM2RKiaa-YFVfq_Y0bmt0GWm6lG1bScNOe5VrcI9sZqlFHEGvkEvwmKSlDIfWbPFHjVPnTV36odmdGEBhMjA8-U9Ya0jctREwY9AieCaapkCYjCgum0WaY9NXPaTD5Q6MhI9lbEM1VcxCTbFFrXn7DKXbUSOJxrODFDevVIEt1revRcyEFHdDktE0LstsUplcRbZNraJEiwXgIe8Umop4MQbLs__mLwhnEB3M8qvGx6oTUlplZMTquUrXFJvz4CBG8d8KbzFfE0okQQ7jR24dBmSkQbaXolIxvkbwUlpqah_uH7MIumnFtVtDRArBwwubHfDwTlUtX8CrR5C1AuiKBAuNW1EupXySdSbzk74P2sxcGKXxXZPUZ3kxfC8vxFttvX_JqHpQ2GALbccLKq-cRAcvnTsQ9WqjBpU4Uvh0lv8p_HOMXE8Md7_43TZDoxryOFQhhZI6yNtsJ8wesEkaL-ivfvwWFzj_ "container")
+![container](https://www.plantuml.com/plantuml/svg/bLRBRXen5Dtp5IxT42c1Hggww2e9GKrI0fGXod9qP-O25XvxP7iWjEhNTD4FoO_rsZCy9nJ22cpVUywvZoEkZ0LjyrJKFd0PYpn1DhKsCrzRBGsBveJRQHxb1dMif4Lfcx5AMva0wM8kZ4q4ZrhjpnS3T_Jqs6sbO2ngEWhR505SecvcBdyjkEi_XuFECEZtmlxJg7lVwpJEQhK1QgDa8ywDLIdgSrOFBD6GjhxvoWINCqoOLUpwfisuD9RRt78bctLA4Im9CmrlL2uJqCj6_8b2xuj7_FNlwvyYh7XMFsE_QZL6dpN1iFDY6mkCGiWoYdp6Y5rdcSD_W3cOMFFCdhDhESa5Q7PvwMxQWZjY6ascfE6HG3PMccLQpNd2vOJPARAuU0HnZCOGRQhC669qd7S8D5AwXmc6L6hA_LZyOZUvSL3VOJm3zsMaGHASjXwAtb8ivSKvWPXgqa8HNolYArNjZwpN6R4lzTNLuFu_Geml6niZs9nULN6KZgTeh0QhT1YlZYbtV-kYWglq37K5TfDhNKELPW9Vs5YeHHNyDjg5Jw8zN7OB5Y8mwCVfHvS5gEUeY-5I1EyJKsy8FGKtKcyKqdCDCrYcLEaD-K5nSA8qttw8lR05xPLN5u6SCUlwwcwKP1cj8s4I2SUX8hRaKEWiyOzBBADEKwdLc0iCGO9O6cwsv1Otj0Z5pOcwVQAVgtOwBs4bna4EKba-vh4dkadSspez4TidMZfiNtqQ2d8HLs9U3FBljNau2oXh7xgcXCNO-ofF0fpaMjNz3_-aMC2ztlcCGnHRNhOnbIVZ4Ttr-d2pe6qGmf2zEOYxqMWGj1x89hUypT5BWOiDhG1byatpfDnFxmzKNtmXdLHnXXVk_MfxIsdDac8utBZ3hlUuj8Qj5B0yIy1YQJ6EO1b_Ut3hTzCDyaXmCsq5UUHyDC8jjohox2_NU-CFyQZQmX21f8srIcac4xRGtEAsfc65ozi3uLhJybroHN-46MLn5kgRU5ZOpkeUuz9zUnNsUdMqg9LTVbzrXmTOx0pYqN9SqKZHFu1_ "container")
 
 ## API Entrypoint events
 
 <ul>
-    <li>Technology: C#, .NET 6, Event Hubs (Kafka) and Masstransit</li>
+    <li>Technology: C#, .NET 6, Kafka and Masstransit</li>
     <li>Description: Web API responsible for providing system features</li>
 </ul>
 
 ## Analyze Profile
 
 <ul>
-    <li>Technology: C#, .NET 6, Event Hubs (Kafka) and Masstransit</li>
+    <li>Technology: C#, .NET 6, Kafka and Masstransit</li>
     <li>Description: Worker responsible for interacting with the bank transaction partner</li>
 </ul>
 
 ## Orchestrator
 
 <ul>
-    <li>Technology: C#, .NET 6, Event Hubs (Kafka), Masstransit and CosmosDB</li>
+    <li>Technology: C#, .NET 6, Kafka, Masstransit and SQL Server</li>
     <li>Description: Worker responsible for orchestrating the complex flows</li>
 </ul>
+
+### BPMN Course Purchase Flow
 
 ![Orchestrator SAGA](./docs/sagas/diagram.svg)
 
 ## Notification
 
 <ul>
-    <li>Technology: C#, .NET 6, Event Hubs (Kafka) and Masstransit</li>
+    <li>Technology: C#, .NET 6, Kafka and Masstransit</li>
     <li>Description: Worker responsible for notifying interested parties</li>
 </ul>
 
 ## Payment
 
 <ul>
-    <li>Technology: C#, .NET 6, Event Hubs (Kafka), Masstransit and CosmosDB</li>
+    <li>Technology: C#, .NET 6, Kafka, Masstransit and SQL Server</li>
     <li>Description: Worker responsible for interacting with the bank transaction partner</li>
 </ul>

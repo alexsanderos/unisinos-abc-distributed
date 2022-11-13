@@ -1,5 +1,5 @@
 using Unisinos.Abc.Payment;
-using Unisinos.Abc.Payment.Configuration;
+using Unisinos.Abc.Payment.Infrastructure.Configuration;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
@@ -8,6 +8,7 @@ IHost host = Host.CreateDefaultBuilder(args)
                 .AddJsonFile("appsettings.json").Build();
 
         services.AddMasstransitConfiguration(configurationService);
+        services.AddPersistenceConfiguration(configurationService);
 
         services.AddHostedService<Worker>();
     })

@@ -3,7 +3,10 @@
 
 SHOW_PERSON_OUTLINE()
 
-Person(customer, "Student", "Student linked to ABC institution.")
+Person(customerStudent, "Student", "Student linked to ABC institution.")
+Person(customerTeacher, "Teacher", "Teacher linked to ABC institution.")
+Person(customerAdministrative, "Administrative", "Administrative linked to ABC institution.")
+
 
 System_Boundary(c0, "Instituição ABC System") {
 
@@ -29,7 +32,10 @@ System_Boundary(c0, "Instituição ABC System") {
 
 System_Ext(partner_bank_system, "PagSeguro", "Partner for bank transactions")
 
-Rel(customer, web_app, "Uses")
+Rel(customerStudent, web_app, "Uses")
+Rel(customerTeacher, web_app, "Uses")
+Rel(customerAdministrative, web_app, "Uses")
+
 Rel(web_app, web_api, "Calls to", "HTTPS/JSON")
 
 System_Ext(mail_system, "SendGrid system", "The external e-mail system partner.")

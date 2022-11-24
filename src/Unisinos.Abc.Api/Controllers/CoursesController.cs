@@ -14,25 +14,26 @@ namespace Unisinos.Abc.Api.Controllers
 
         public CoursesController(
             IPurchaseCourseService purchaseCourseService,
-            ILogger<CoursesController> logger )
+            ILogger<CoursesController> logger)
         {
             _purchaseCourseService = purchaseCourseService;
             _logger = logger;
         }
 
         [HttpPost("Purchases")]
-        public ActionResult PurchaseCreditCourse([FromBody] PurchaseCourseCreditRequest request)
+        public ActionResult<PurchaseCourseCreditResponse> PurchaseCreditCourse([FromBody] PurchaseCourseCreditRequest request)
         {
-            _purchaseCourseService.PurchaseCreditCourse(new PurchaseCreditCourseCommand()
+            var command = new PurchaseCreditCourseCommand()
             {
                 CorrelationId = Guid.NewGuid(),
                 StudentCPF = request.StudentCPF,
                 StudentName = request.StudentName,
                 NumberInstallments = request.NumberInstallments,
                 TotalValue = request.TotalValue
-            });
+            };
+            _purchaseCourseService.PurchaseCreditCourse(command);
 
-            return Ok();
+            return Ok(new PurchaseCourseCreditResponse(command.CorrelationId));
         }
     }
 }

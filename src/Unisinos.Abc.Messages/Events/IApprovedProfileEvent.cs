@@ -2,7 +2,6 @@
 {
     public interface IApprovedProfileEvent : IBaseEvent
     {
-        Guid Id { get; set; }
         string? StudentName { get; set; }
         string? StudentCPF { get; set; }
         public decimal TotalValue { get; set; }

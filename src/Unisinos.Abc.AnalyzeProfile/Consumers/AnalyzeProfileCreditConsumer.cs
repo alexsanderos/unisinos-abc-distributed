@@ -32,6 +32,7 @@ namespace Unisinos.Abc.AnalyzeProfile.Consumers
                     StudentName = context.Message.StudentName,
                     StudentCPF = context.Message.StudentCPF,
                     TotalValue = context.Message.TotalValue,
+                    IsApproved = true,
                     NumberInstallments = context.Message.NumberInstallments
                 });
         }
